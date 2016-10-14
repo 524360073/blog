@@ -1,0 +1,100 @@
+PHP简单 对象(object) 与 数组(array) 的转换
+
+PHP简单 对象(object) 与 数组(array) 的转换
+
+数组是PHP的灵魂，非常强大，但有时候面向对象编程也是挺方便的，数组 与 对象 之间切换也是常有的事：
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+/**
+ * 数组 转 对象
+ *
+ * @param array $arr 数组
+ * @return object
+ */
+function array_to_object($arr)
+{
+    if (gettype($arr) != 'array')
+    {
+        return;
+    }
+    foreach ($arr as $k => $v)
+    {
+        if (gettype($v) == 'array' || getType($v) == 'object')
+        {
+            $arr[$k] = (object)array_to_object($v);
+        }
+    }
+ 
+    return (object)$arr;
+}
+ 
+/**
+ * 对象 转 数组
+ *
+ * @param object $obj 对象
+ * @return array
+ */
+function object_to_array($obj)
+{
+    $obj = (array)$obj;
+    foreach ($obj as $k => $v)
+    {
+        if (gettype($v) == 'resource')
+        {
+            return;
+        }
+        if (gettype($v) == 'object' || gettype($v) == 'array')
+        {
+            $obj[$k] = (array)object_to_array($v);
+        }
+    }
+ 
+    return $obj;
+}
+
+
+http://www.cnblogs.com/52php/p/5684509.html
